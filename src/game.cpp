@@ -2,10 +2,10 @@
 
 Game::Game()
     : window(sf::VideoMode({WIDTH, HEIGHT}), NAME),
-      position({100.0f, HEIGHT / 2.0f}), velocity({0.0f, 0.0f}) {
-  bird.setSize({40, 40});
+      position({POSITION_X, POSITION_Y}), velocity({0.0f, 0.0f}) {
+  bird.setSize({SIZE_X, SIZE_Y});
   bird.setPosition({position[0], position[1]});
-  bird.setFillColor(sf::Color::Yellow);
+  bird.setFillColor(COLOR);
 }
 
 void Game::run() {
@@ -20,14 +20,13 @@ void Game::run() {
       if (event->is<sf::Event::KeyPressed>()) {
         auto keyEvent = event->getIf<sf::Event::KeyPressed>();
         if (keyEvent && keyEvent->code == sf::Keyboard::Key::Space) {
-          velocity[1] = -300.0f;
+          velocity[1] = JUMP;
         }
       }
     }
 
     // update
-    float gravity = 981.0f;
-    velocity[1] += gravity * dt;
+    velocity[1] += GRAVITY * dt;
 
     position[0] += velocity[0] * dt;
     position[1] += velocity[1] * dt;
