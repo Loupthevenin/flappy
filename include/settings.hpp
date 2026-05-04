@@ -11,7 +11,7 @@
 #define POSITION_X 20.0f
 #define POSITION_Y HEIGHT / 2.0f
 
-#define COLOR sf::Color::Green
+#define COLOR sf::Color::Yellow
 
 #define JUMP -300.0f
 #define GRAVITY 9.81f * 150.0f
@@ -20,3 +20,5 @@
 #define GAPSIZE 150.0f
 #define COLOR_PIPE sf::Color::Green
 #define SIZE_PIPE 80.0f
+
+#define COLOR_TEXT sf::Color::White

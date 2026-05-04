@@ -15,6 +15,10 @@ public:
   sf::FloatRect getTopBounds() const;
   sf::FloatRect getBotBounds() const;
 
+  bool scored;
+
+  float getX() const;
+
 private:
   sf::RectangleShape topPipe;
   sf::RectangleShape botPipe;

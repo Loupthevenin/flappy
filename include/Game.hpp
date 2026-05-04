@@ -20,4 +20,9 @@ private:
 
   std::vector<Pipe> pipes;
   sf::Clock pipeClock;
+
+  int score;
+
+  sf::Font font;
+  sf::Text scoreText;
 };

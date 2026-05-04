@@ -26,3 +26,5 @@ void Bird::jump() { velocityY = JUMP; }
 void Bird::draw(sf::RenderWindow &window) { window.draw(shape); }
 
 sf::FloatRect Bird::getBounds() const { return shape.getGlobalBounds(); }
+
+float Bird::getX() const { return position.x; }

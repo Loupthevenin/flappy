@@ -1,6 +1,17 @@
 #include "../include/Game.hpp"
+#include <string>
 
-Game::Game() : window(sf::VideoMode({WIDTH, HEIGHT}), NAME), bird() {}
+Game::Game()
+    : window(sf::VideoMode({WIDTH, HEIGHT}), NAME), bird(), score(0), font(),
+      scoreText(font) {
+
+  font.openFromFile("../assets/arial.ttf");
+
+  scoreText.setFont(font);
+  scoreText.setCharacterSize(40);
+  scoreText.setFillColor(COLOR_TEXT);
+  scoreText.setPosition({20, 20});
+}
 
 void Game::run() {
   while (window.isOpen()) {
@@ -28,9 +39,12 @@ void Game::run() {
 
     // update
     bird.update(dt);
-
     for (auto &pipe : pipes) {
       pipe.update(dt);
+      if (!pipe.scored && pipe.getX() + SIZE_PIPE < bird.getX()) {
+        score++;
+        pipe.scored = true;
+      }
       for (auto &pipe : pipes) {
         if (bird.getBounds().findIntersection(pipe.getTopBounds()) ||
             bird.getBounds().findIntersection(pipe.getBotBounds())) {
@@ -39,12 +53,15 @@ void Game::run() {
       }
     }
 
+    scoreText.setString(std::to_string(score));
+
     // Draw
     window.clear();
     bird.draw(window);
     for (auto &pipe : pipes) {
       pipe.draw(window);
     }
+    window.draw(scoreText);
     window.display();
   }
 }

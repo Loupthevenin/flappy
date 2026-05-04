@@ -14,6 +14,8 @@ public:
 
   sf::FloatRect getBounds() const;
 
+  float getX() const;
+
 private:
   sf::RectangleShape shape;
   float velocityY;
