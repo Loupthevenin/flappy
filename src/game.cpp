@@ -3,7 +3,7 @@
 
 Game::Game()
     : window(sf::VideoMode({WIDTH, HEIGHT}), NAME), bird(), score(0), font(),
-      scoreText(font) {
+      scoreText(font), pipeSpeed(200.0f) {
 
   font.openFromFile("../assets/arial.ttf");
 
@@ -34,6 +34,9 @@ void Game::update(float dt) {
   updatePipes(dt);
   checkCollisions();
   updateScore();
+  if (score > 10) {
+    pipeSpeed = SPEED_PIPE + score * 10.0f;
+  }
 }
 
 void Game::updateBird(float dt) { bird.update(dt); }
@@ -48,7 +51,7 @@ void Game::spawnPipes() {
 
 void Game::updatePipes(float dt) {
   for (auto &pipe : pipes) {
-    pipe.update(dt);
+    pipe.update(dt, pipeSpeed);
 
     if (!pipe.scored && pipe.getX() + SIZE_PIPE < bird.getX()) {
       score++;

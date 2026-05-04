@@ -35,4 +35,5 @@ private:
 
   sf::Font font;
   sf::Text scoreText;
+  float pipeSpeed;
 };

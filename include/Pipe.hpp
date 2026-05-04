@@ -7,7 +7,7 @@ class Pipe {
 public:
   Pipe(float x, float gapY);
 
-  void update(float dt);
+  void update(float dt, float speed);
   void draw(sf::RenderWindow &window);
 
   bool isOffScreen() const;

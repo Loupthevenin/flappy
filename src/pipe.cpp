@@ -11,7 +11,7 @@ Pipe::Pipe(float startX, float gapY)
   botPipe.setFillColor(COLOR_PIPE);
 }
 
-void Pipe::update(float dt) {
+void Pipe::update(float dt, float speed) {
   x -= speed * dt;
   topPipe.setPosition({x, 0});
   botPipe.setPosition({x, botPipe.getPosition().y});
