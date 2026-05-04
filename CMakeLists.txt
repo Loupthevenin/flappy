@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
 
 # Créer l'exécutable
-add_executable(flappy src/main.cpp)
+add_executable(flappy src/game.cpp src/main.cpp)
 
 # Lier SFML (nouvelle syntaxe)
 target_link_libraries(flappy
