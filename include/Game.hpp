@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Bird.hpp"
-
+#include "Pipe.hpp"
+#include "settings.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
-
-#define NAME "Flappy"
+#include <vector>
 
 class Game {
 public:
@@ -17,4 +17,7 @@ private:
   sf::Clock clock;
 
   Bird bird;
+
+  std::vector<Pipe> pipes;
+  sf::Clock pipeClock;
 };

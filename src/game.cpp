@@ -19,12 +19,32 @@ void Game::run() {
       }
     }
 
+    // Spawn pipe / 2s
+    if (pipeClock.getElapsedTime().asSeconds() > 2.f) {
+      float gapY = 150.f + std::rand() % 250;
+      pipes.emplace_back(800.f, gapY);
+      pipeClock.restart();
+    }
+
     // update
     bird.update(dt);
+
+    for (auto &pipe : pipes) {
+      pipe.update(dt);
+      for (auto &pipe : pipes) {
+        if (bird.getBounds().findIntersection(pipe.getTopBounds()) ||
+            bird.getBounds().findIntersection(pipe.getBotBounds())) {
+          window.close(); // game over simple pour l’instant
+        }
+      }
+    }
 
     // Draw
     window.clear();
     bird.draw(window);
+    for (auto &pipe : pipes) {
+      pipe.draw(window);
+    }
     window.display();
   }
 }
