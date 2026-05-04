@@ -13,55 +13,80 @@ Game::Game()
   scoreText.setPosition({20, 20});
 }
 
+void Game::handleEvents() {
+  while (auto event = window.pollEvent()) {
+    if (event->is<sf::Event::Closed>()) {
+      window.close();
+    }
+    // Input
+    if (event->is<sf::Event::KeyPressed>()) {
+      auto keyEvent = event->getIf<sf::Event::KeyPressed>();
+      if (keyEvent && keyEvent->code == sf::Keyboard::Key::Space) {
+        bird.jump();
+      }
+    }
+  }
+}
+
+void Game::update(float dt) {
+  spawnPipes();
+  updateBird(dt);
+  updatePipes(dt);
+  checkCollisions();
+  updateScore();
+}
+
+void Game::updateBird(float dt) { bird.update(dt); }
+
+void Game::spawnPipes() {
+  if (pipeClock.getElapsedTime().asSeconds() > 2.f) {
+    float gapY = 150.f + std::rand() % 250;
+    pipes.emplace_back(800.f, gapY);
+    pipeClock.restart();
+  }
+}
+
+void Game::updatePipes(float dt) {
+  for (auto &pipe : pipes) {
+    pipe.update(dt);
+
+    if (!pipe.scored && pipe.getX() + SIZE_PIPE < bird.getX()) {
+      score++;
+      pipe.scored = true;
+    }
+  }
+}
+
+void Game::checkCollisions() {
+  for (auto &pipe : pipes) {
+    if (bird.getBounds().findIntersection(pipe.getTopBounds()) ||
+        bird.getBounds().findIntersection(pipe.getBotBounds())) {
+      window.close(); // game over simple pour l’instant
+    }
+  }
+}
+
+void Game::updateScore() { scoreText.setString(std::to_string(score)); }
+
+void Game::render() {
+  window.clear();
+
+  bird.draw(window);
+
+  for (auto &pipe : pipes) {
+    pipe.draw(window);
+  }
+
+  window.draw(scoreText);
+  window.display();
+}
+
 void Game::run() {
   while (window.isOpen()) {
     float dt = clock.restart().asSeconds();
-    // Event
-    while (auto event = window.pollEvent()) {
-      if (event->is<sf::Event::Closed>()) {
-        window.close();
-      }
-      // Input
-      if (event->is<sf::Event::KeyPressed>()) {
-        auto keyEvent = event->getIf<sf::Event::KeyPressed>();
-        if (keyEvent && keyEvent->code == sf::Keyboard::Key::Space) {
-          bird.jump();
-        }
-      }
-    }
 
-    // Spawn pipe / 2s
-    if (pipeClock.getElapsedTime().asSeconds() > 2.f) {
-      float gapY = 150.f + std::rand() % 250;
-      pipes.emplace_back(800.f, gapY);
-      pipeClock.restart();
-    }
-
-    // update
-    bird.update(dt);
-    for (auto &pipe : pipes) {
-      pipe.update(dt);
-      if (!pipe.scored && pipe.getX() + SIZE_PIPE < bird.getX()) {
-        score++;
-        pipe.scored = true;
-      }
-      for (auto &pipe : pipes) {
-        if (bird.getBounds().findIntersection(pipe.getTopBounds()) ||
-            bird.getBounds().findIntersection(pipe.getBotBounds())) {
-          window.close(); // game over simple pour l’instant
-        }
-      }
-    }
-
-    scoreText.setString(std::to_string(score));
-
-    // Draw
-    window.clear();
-    bird.draw(window);
-    for (auto &pipe : pipes) {
-      pipe.draw(window);
-    }
-    window.draw(scoreText);
-    window.display();
+    handleEvents();
+    update(dt);
+    render();
   }
 }

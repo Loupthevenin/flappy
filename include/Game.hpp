@@ -10,6 +10,16 @@
 class Game {
 public:
   Game();
+
+  void handleEvents();
+  void update(float dt);
+  void updateBird(float dt);
+  void spawnPipes();
+  void updatePipes(float dt);
+  void checkCollisions();
+  void updateScore();
+  void render();
+
   void run();
 
 private:
